@@ -49,12 +49,15 @@ public class User implements UserDetails {
         if (role == null || role.isBlank()) {
             return List.of();
         }
-
-        // para garantir formato: ROLE_SUPER_ADMIN, ROLE_MEMBER, etc.
-        String formattedRole = role.startsWith("ROLE_") ? role : "ROLE_" + role;
-
+        String r = role.trim().toUpperCase();
+        // se salvaram "ROLE_ADMIN", normalizamos para "ADMIN"
+        if (r.startsWith("ROLE_")) {
+            r = r.substring(5);
+        }
+        String formattedRole = "ROLE_" + r;
         return List.of(new SimpleGrantedAuthority(formattedRole));
     }
+
 
     @Override
     public String getUsername() {
