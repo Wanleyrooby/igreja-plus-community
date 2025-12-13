@@ -29,6 +29,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "full_name")
     private String fullname;
 
     private String role; // SUPER_ADMIN, ADMIN_CHURCH, LEADER, MEMBER
@@ -49,14 +50,16 @@ public class User implements UserDetails {
         if (role == null || role.isBlank()) {
             return List.of();
         }
+
         String r = role.trim().toUpperCase();
-        // se salvaram "ROLE_ADMIN", normalizamos para "ADMIN"
+
         if (r.startsWith("ROLE_")) {
             r = r.substring(5);
         }
-        String formattedRole = "ROLE_" + r;
-        return List.of(new SimpleGrantedAuthority(formattedRole));
+
+        return List.of(new SimpleGrantedAuthority("ROLE_" + r));
     }
+
 
 
     @Override
