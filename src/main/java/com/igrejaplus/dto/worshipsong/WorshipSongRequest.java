@@ -1,7 +1,4 @@
-package com.igrejaplus.dto;
-
-import com.igrejaplus.model.Church;
-import java.time.Instant;
+package com.igrejaplus.dto.worshipsong;
 
 public record WorshipSongRequest(
 

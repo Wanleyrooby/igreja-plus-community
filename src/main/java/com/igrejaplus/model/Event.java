@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
@@ -19,12 +20,17 @@ public class Event {
     private Long id;
 
     private String title;
+
+    @Column(length = 2000)
     private String description;
-    private Instant startAt;
-    private Instant endAt;
 
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "church_id")
-    private Church church;
+    private Instant createdAt;
+
+    @PrePersist
+    void prePersist() {
+        createdAt = Instant.now();
+    }
 }

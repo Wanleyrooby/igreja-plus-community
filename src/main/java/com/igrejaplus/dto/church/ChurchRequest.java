@@ -1,4 +1,4 @@
-package com.igrejaplus.dto;
+package com.igrejaplus.dto.church;
 
 import jakarta.validation.constraints.NotBlank;
 

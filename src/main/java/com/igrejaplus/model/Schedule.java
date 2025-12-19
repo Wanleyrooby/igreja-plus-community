@@ -21,8 +21,5 @@ public class Schedule {
     private LocalDate date;
     private String details; // json ou texto simples descrevendo participantes
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "church_id")
-    private Church church;
 }
 

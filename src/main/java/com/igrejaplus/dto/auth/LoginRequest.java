@@ -1,4 +1,4 @@
-package com.igrejaplus.dto;
+package com.igrejaplus.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

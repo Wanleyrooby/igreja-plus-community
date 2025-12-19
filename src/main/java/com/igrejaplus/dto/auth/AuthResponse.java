@@ -1,9 +1,10 @@
-package com.igrejaplus.dto;
+package com.igrejaplus.dto.auth;
+
+import com.igrejaplus.model.Role;
 
 public record AuthResponse(
         String accessToken,
         String refreshToken,
-        String fullname,
-        String role
+        Role role
 ) {
 }

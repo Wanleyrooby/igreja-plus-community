@@ -2,32 +2,29 @@ package com.igrejaplus.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
 
+import java.time.Instant;
 
 @Entity
-@Table(name = "members")
+@Table(name = "refresh_tokens")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 255)
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String token;
 
-    @Column(length = 50)
-    private String phone;
-
-    private LocalDate birthday;
-
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
+    private Instant expiryDate;
 }

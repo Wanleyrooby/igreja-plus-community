@@ -1,9 +1,9 @@
 package com.igrejaplus.controller;
 
-import com.igrejaplus.dto.AuthResponse;
-import com.igrejaplus.dto.LoginRequest;
-import com.igrejaplus.dto.RefreshTokenRequest;
-import com.igrejaplus.dto.UserRequest;
+import com.igrejaplus.dto.auth.AuthResponse;
+import com.igrejaplus.dto.auth.LoginRequest;
+import com.igrejaplus.dto.auth.RefreshTokenRequest;
+import com.igrejaplus.dto.auth.UserRequest;
 import com.igrejaplus.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +30,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest dto) {
         return ResponseEntity.ok(authService.login(dto));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody RefreshTokenRequest dto) {
+        authService.logout(dto.refreshToken());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/refresh")

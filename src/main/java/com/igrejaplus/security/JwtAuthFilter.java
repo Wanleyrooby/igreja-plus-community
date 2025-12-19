@@ -30,14 +30,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String uri = request.getRequestURI();
 
-        // liberar tudo de /api/auth/**
-        if (uri.matches(".*/auth/.*")) {
+        // 🔓 endpoints públicos
+        if (uri.startsWith("/api/auth")) {
             filterChain.doFilter(request, response);
-            return;
-        }
-
-        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
-            response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
 
@@ -49,28 +44,38 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String email = jwtUtil.extractEmail(token);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            System.out.println("Email extraído: " + email); // Log
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        try {
+            String email = jwtUtil.extractEmailFromAccess(token);
 
-            if (jwtUtil.isTokenValid(token, userDetails)) {
-                System.out.println("Token válido, autenticando...");
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities()
-                        );
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                UserDetails userDetails =
+                        userDetailsService.loadUserByUsername(email);
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("Token válido, autenticando...");
-            } else {
-                System.out.println("Token inválido ou expirado");
+                if (jwtUtil.isAccessTokenValid(token, userDetails)) {
+
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request)
+                    );
+
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(authToken);
+                }
             }
+
+        } catch (Exception e) {
+            // token inválido → não autentica
+            SecurityContextHolder.clearContext();
         }
 
         filterChain.doFilter(request, response);

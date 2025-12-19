@@ -52,9 +52,6 @@ public class WorshipSong {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "church_id", nullable = false)
-    private Church church;
 
     @PrePersist
     public void prePersist() {

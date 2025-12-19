@@ -29,61 +29,27 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "full_name")
-    private String fullname;
-
-    private String role; // SUPER_ADMIN, ADMIN_CHURCH, LEADER, MEMBER
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private Instant createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "church_id")
-    private Church church;
+    @OneToOne(mappedBy = "user")
+    private Member member;
 
     @PrePersist
-    public void prePersist() {
-        this.createdAt = Instant.now();
+    void prePersist() {
+        createdAt = Instant.now();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (role == null || role.isBlank()) {
-            return List.of();
-        }
-
-        String r = role.trim().toUpperCase();
-
-        if (r.startsWith("ROLE_")) {
-            r = r.substring(5);
-        }
-
-        return List.of(new SimpleGrantedAuthority("ROLE_" + r));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @Override public String getUsername() { return email; }
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 }
