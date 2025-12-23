@@ -1,4 +1,4 @@
-package com.igrejaplus.dto;
+package com.igrejaplus.dto.event;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

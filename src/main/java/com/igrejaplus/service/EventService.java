@@ -1,7 +1,7 @@
 package com.igrejaplus.service;
 
-import com.igrejaplus.dto.EventResponse;
-import com.igrejaplus.dto.EventsRequest;
+import com.igrejaplus.dto.event.EventResponse;
+import com.igrejaplus.dto.event.EventsRequest;
 import com.igrejaplus.mapper.EventMapper;
 import com.igrejaplus.model.Event;
 import com.igrejaplus.repository.EventRepository;

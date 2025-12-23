@@ -1,6 +1,8 @@
-package com.igrejaplus.dto;
+package com.igrejaplus.dto.event;
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +12,12 @@ public record EventsRequest(
         String title,
 
         String description,
+
+        @Future
+        @NotNull
         LocalDateTime startAt,
+
+        @Future
         LocalDateTime endAt
 ) {
 }
