@@ -26,7 +26,7 @@ public class Member {
 
     private LocalDate birthday;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

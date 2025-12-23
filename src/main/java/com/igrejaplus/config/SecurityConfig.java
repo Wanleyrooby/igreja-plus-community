@@ -26,19 +26,24 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // DESABILITA CSRF (JWT)
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm ->
-                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                // SEM SESSÃO
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
+                // AUTORIZAÇÃO
                 .authorizeHttpRequests(auth -> auth
 
-                        // AUTH PÚBLICO
+                        // AUTH
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // CONFIG
+                        // CONFIGURAÇÕES
                         .requestMatchers(HttpMethod.GET, "/api/config").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/config").hasRole("ADMIN")
 
@@ -61,8 +66,25 @@ public class SecurityConfig {
                         // ADMIN
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
+                        // MEMBRO LOGADO
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/members/me"
+                        ).authenticated()
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/members/me"
+                        ).authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "/api/members")
+                        .hasRole("ADMIN")
+
+                        // DEFAULT
                         .anyRequest().authenticated()
                 )
+
+                // JWT FILTER
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
