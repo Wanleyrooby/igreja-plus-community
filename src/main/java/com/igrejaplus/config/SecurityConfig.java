@@ -47,9 +47,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/config").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/config").hasRole("ADMIN")
 
+                        // EVENTO
+                        .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/events/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/events/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/events/**").hasRole("ADMIN")
+
                         // LEITURA
                         .requestMatchers(HttpMethod.GET,
-                                "/api/events/**",
                                 "/api/schedules/**",
                                 "/api/worship-songs/**",
                                 "/api/comments/**"

@@ -84,13 +84,22 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
-    // ================= BUSINESS RULES =================
+    // ================= REGRA DE NEGÓCIO =================
 
     private void validateDates(LocalDateTime start, LocalDateTime end) {
-        if (start != null && end != null && end.isBefore(start)) {
-            throw new IllegalArgumentException(
-                    "A data final não pode ser anterior à data inicial"
-            );
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if (start == null) {
+            throw new IllegalArgumentException("Data inicial é obrigatória.");
+        }
+
+        if (start.isBefore(now)) {
+            throw new IllegalArgumentException("O evento deve começar no futuro.");
+        }
+
+        if (end != null && end.isBefore(start)) {
+            throw new IllegalArgumentException("A data final não pode ser antes da inicial.");
         }
     }
 }
