@@ -3,6 +3,7 @@ package com.igrejaplus.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "schedules")
@@ -17,9 +18,10 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String type; // "Louvor", "Mídia", etc.
     private LocalDate date;
-    private String details; // json ou texto simples descrevendo participantes
 
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ScheduleItem> items;
 }
 

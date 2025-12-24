@@ -56,13 +56,23 @@ public class SecurityConfig {
                         // LEITURA
                         .requestMatchers(HttpMethod.GET,
                                 "/api/schedules/**",
-                                "/api/worship-songs/**",
                                 "/api/comments/**"
                         ).hasAnyRole(
                                 "ADMIN",
                                 "MEMBER_READ_ONLY",
                                 "MEMBER_COMMENT"
                         )
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/schedules/**"
+                        ).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/schedules/**"
+                        ).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/schedules/**"
+                        ).hasRole("ADMIN")
+                        .requestMatchers( "/api/schedules/{scheduleId}/items/**")
+                        .hasRole("ADMIN")
 
                         // COMENTÁRIOS
                         .requestMatchers(HttpMethod.POST, "/api/comments/**")
