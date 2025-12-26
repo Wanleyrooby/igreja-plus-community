@@ -44,14 +44,26 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
 
                         // CONFIGURAÇÕES
-                        .requestMatchers(HttpMethod.GET, "/api/config").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/config").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/config")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/config")
+                        .hasRole("ADMIN")
 
                         // EVENTO
-                        .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/events/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/events/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/events/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/events/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/events/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/events/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/events/**")
+                        .hasRole("ADMIN")
 
                         // LEITURA
                         .requestMatchers(HttpMethod.GET,
@@ -77,6 +89,10 @@ public class SecurityConfig {
                         // COMENTÁRIOS
                         .requestMatchers(HttpMethod.POST, "/api/comments/**")
                         .hasAnyRole("ADMIN", "MEMBER_COMMENT")
+                        .requestMatchers(HttpMethod.PATCH, "/api/comments/**")
+                        .hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/comments/**")
+                        .hasAnyRole("ADMIN")
 
                         // ADMIN
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
