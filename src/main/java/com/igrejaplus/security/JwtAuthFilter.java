@@ -28,6 +28,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // 🔥 IGNORAR PREFLIGHT CORS
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String uri = request.getRequestURI();
 
         // 🔓 endpoints públicos
@@ -74,7 +80,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            // token inválido → não autentica
             SecurityContextHolder.clearContext();
         }
 

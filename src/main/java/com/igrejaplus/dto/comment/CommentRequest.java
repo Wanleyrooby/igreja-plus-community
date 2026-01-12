@@ -9,9 +9,6 @@ public record CommentRequest(
         String content,
 
         @NotNull
-        Long memberId,
-
-        @NotNull
         Long eventId
 ) {
 }

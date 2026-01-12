@@ -11,6 +11,7 @@ import com.igrejaplus.repository.CommentRepository;
 import com.igrejaplus.repository.EventRepository;
 import com.igrejaplus.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,13 @@ public class CommentService {
 
     public CommentResponse create(CommentRequest dto) {
 
-        Member member = memberRepository.findById(dto.memberId())
+        // Pega usuário autenticado
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        Member member = memberRepository.findByUserEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Membro não encontrado."));
 
         Event event = eventRepository.findById(dto.eventId())

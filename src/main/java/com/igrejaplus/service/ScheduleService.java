@@ -32,6 +32,8 @@ public class ScheduleService {
 
             Member member = memberRepository.findById(memberId)
                     .orElseThrow(() -> new RuntimeException("Membro não encontrado: " + memberId));
+
+            item.setMember(member);
         }
 
         Schedule saved = scheduleRepository.save(schedule);
